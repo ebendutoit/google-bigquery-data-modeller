@@ -1,0 +1,6 @@
+jinja2
+argparse
+google-cloud-bigquery
+clint
+pyfiglet
+pygments
