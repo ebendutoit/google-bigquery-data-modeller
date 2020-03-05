@@ -4,6 +4,7 @@ Model your data using BigQuery views and Jinja templates
 ## Installation and usage
 
 1. Authenticate with Google Cloud from your command line: `gcloud init`
+   
 2. Deploy a view with: 
 
 ```
@@ -18,6 +19,8 @@ FROM (
     {% include 'select_101/select_101.sql.j2' %}
 )
 ```
+
+4. Define the schema of views in a `json` file. One file per metric.
 
 ## Configuration
 
