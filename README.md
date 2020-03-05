@@ -14,7 +14,8 @@ Model your data using BigQuery views and Jinja templates
 
 ## Variables
 
-Variables may be declared in the file `configuration.json`. To use a variable in a template simply enclose it in ```{{ curlyBrackets }}```
+Variables may be declared in the file `configuration.json`. To use a variable in a template simply enclose it in curly brackets like so:
+```{{ variable_name }}```
 
 ## Deployments
 
