@@ -1,0 +1,15 @@
+{
+    "metric": "First example",
+    "metric_description": "Select only a constant number as output",
+    "purpose" : "",
+    "usage_example" : "",
+    "usage_description" : "",
+    "fields": [
+        {
+            "field": "num",
+            "description": "A small number",
+            "type": "INTEGER",
+            "typical_values": [ 4 ]
+        }
+    ]
+}

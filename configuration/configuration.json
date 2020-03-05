@@ -1,0 +1,7 @@
+{
+    "fromDateVariable" : "@fromDate",
+    "fromDate" : "\"2019-03-31\"",
+    "toDateVariable" : "@toDate",
+    "toDate" : "\"2019-03-31\"",
+    "aNumber": 101
+}

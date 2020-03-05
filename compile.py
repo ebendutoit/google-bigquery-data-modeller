@@ -92,7 +92,6 @@ def get_view_description(view_name):
     return view_description
 
 def render_template(template_file, output_file):
-
     location = find(template_file, "metrics/").replace("metrics", "")
     template_file = path.join(template_file.split(".")[0], template_file)
     # Template render
@@ -129,26 +128,24 @@ def deploy_all(dataset_name):
 
 
 def main():
-    METRICS_DATASET = "metrics"
-    METRICSDEV_DATASET = "metrics_dev"
     
+    DATASET = ""
+    PROJECT = ""
+
     parser = argparse.ArgumentParser()
     
     parser.add_argument("-m", "--metric_file", metavar="METRIC", action="store", help="the metric filename to process")
     parser.add_argument("-o", "--output_file", metavar="OUTPUTFILE", action="store")
     parser.add_argument("-v", "--create_view", action="store_true", help="create a view from the metric")
     parser.add_argument("-a", "--all_metrics", action="store_true", help="deploy all views")
-    parser.add_argument("-d", "--dev", action="store_true", help="deploy views to development dataset: {}".format(METRICSDEV_DATASET))
+    parser.add_argument("-d", "--dataset", metavar="DATASET", action="store", help="deploy views to this dataset")
+    parser.add_argument("-p", "--project", metavar="PROJECT", action="store", help="deploy views to a dataset in this project")
 
     args = parser.parse_args()  
 
     if not (args.all_metrics or args.metric_file):
         parser.print_usage()
         sys.exit(1)
-
-    dataset = METRICS_DATASET
-    if args.dev:
-        dataset = METRICSDEV_DATASET
         
     if (not args.all_metrics):
         with indent(4, quote="* "):
@@ -162,7 +159,7 @@ def main():
         if (args.create_view):
             view_sql = finalSQL
             view_name = args.metric_file.split(".")[0]
-            create_view(dataset, view_name, "mydata-1470162410749", view_sql)
+            create_view(args.dataset, view_name, args.project, view_sql)
 
         if (args.output_file):
             print("...SQL File built at ./build/{}".format(args.output_file))
