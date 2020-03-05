@@ -28,3 +28,7 @@ Variables may be declared in the file `configuration.json`. To use a variable in
 ## Deployments
 
 Using the `-all` flag, all the views listed in `deployment.json` will be deployed.
+
+## License
+
+MIT
