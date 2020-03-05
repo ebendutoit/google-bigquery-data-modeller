@@ -4,23 +4,19 @@ Model your data using BigQuery views and Jinja templates
 ## Installation and usage
 
 1. Authenticate with Google Cloud from your command line: `gcloud init`
-   
-2. Deploy a view with: 
-
+2. Run `./install.sh` to install the requirements 
+3. Deploy a view with: 
 ```
 ./compile.py -m select_101.sql.j2 -v -d <DATASET> -p <PROJECTID>
 ```
-
-3. Reference SQL templates from other templates:
-
+4. Reference SQL templates from other templates
 ```
 SELECT *
 FROM (
     {% include 'select_101/select_101.sql.j2' %}
 )
 ```
-
-4. Define the schema of views in a `json` file. One file per metric.
+5. Define the schema of views in a `json` file. One file per metric
 
 ## Configuration
 
