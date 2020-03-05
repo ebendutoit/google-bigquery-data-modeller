@@ -164,7 +164,7 @@ def main():
         if (args.output_file):
             print("...SQL File built at ./build/{}".format(args.output_file))
     else:
-        deploy_all(dataset)
+        deploy_all(args.dataset)
 
     with indent(4, quote="* "):
         puts(colored.yellow("Finished!"))
