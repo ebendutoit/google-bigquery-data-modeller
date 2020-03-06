@@ -7,7 +7,7 @@ Model your data using BigQuery views and Jinja templates
 2. Run `./install.sh` to install the requirements 
 3. Deploy a view with: 
 ```
-./compile.py -m select_101.sql.j2 -v -d <DATASET> -p <PROJECTID>
+poetry run python compile.py -m select_101.sql.j2 -v -d <DATASET> -p <PROJECTID>
 ```
 4. Reference SQL templates from other templates
 ```
@@ -28,7 +28,3 @@ Variables may be declared in the file `configuration.json`. To use a variable in
 ## Deployments
 
 Using the `-all` flag, all the views listed in `deployment.json` will be deployed.
-
-## License
-
-MIT
