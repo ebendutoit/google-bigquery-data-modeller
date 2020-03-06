@@ -1,22 +1,27 @@
 #!/usr/bin/env python3
 
-import os
-from os import path
-import sys
-import json
 import argparse
-
-from jinja2 import Template, FileSystemLoader, Environment
+import json
+import os
+import sys
+from clint.textui import puts, colored, indent
 from google.cloud import bigquery
+from jinja2 import Template, FileSystemLoader, Environment
+from os import path
 from pygments import highlight
 from pygments.lexers.sql import SqlLexer
 from pygments.formatters import TerminalFormatter
 from pyfiglet import Figlet
-from clint.textui import puts, colored, indent
 
 # Configuration load
-with open(path.join(".", "configuration", "configuration.json")) as json_config:
-    config_dict = json.load(json_config)
+try:
+    with open(path.join(".", "configuration", "configuration.json")) as json_config:
+        config_dict = json.load(json_config)
+except (OSError, IOError) as e:
+    with indent(4, quote='* '):
+            puts(colored.red("Please create configuration.json. It doesn't exist."))
+            sys.exit() 
+
 
 def create_view(dataset_name, view_name, project, viewSQL):
 
@@ -104,6 +109,7 @@ def render_template(template_file, output_file):
         puts(colored.green("Rendered SQL --> "))
 
     template = template_env.get_template(TEMPLATE_FILE)
+
     output_text = template.render(config_dict)
 
     if (output_file):
