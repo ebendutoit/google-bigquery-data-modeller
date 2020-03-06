@@ -136,3 +136,6 @@ dmypy.json
 
 # Secret files
 .envrc
+.idea
+.vscode
+

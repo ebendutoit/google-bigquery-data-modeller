@@ -5,8 +5,9 @@ import json
 import os
 import sys
 from clint.textui import puts, colored, indent
+from google.api_core.exceptions import Conflict
 from google.cloud import bigquery
-from jinja2 import Template, FileSystemLoader, Environment
+from jinja2 import FileSystemLoader, Environment
 from os import path
 from pygments import highlight
 from pygments.lexers.sql import SqlLexer
@@ -42,14 +43,10 @@ def create_view(dataset_name, view_name, project, viewSQL):
     table.view_use_legacy_sql = False
     table.description = view_description["metric_description"]
 
-    try:
-        # Delete the view if it exists
-        bigquery_client.delete_table(table)
-        with indent(4, quote="* "):
-            puts(colored.blue("Existing view deleted"))
-    except Exception as err:
-        with indent(4, quote="* "):
-            puts(colored.red("View doesn't exist"))
+    # Delete the view if it exists
+    bigquery_client.delete_table(table, not_found_ok=True)
+    with indent(4, quote="* "):
+        puts(colored.blue("Existing view deleted"))
 
     try:
         # Create the new view
@@ -62,7 +59,7 @@ def create_view(dataset_name, view_name, project, viewSQL):
                     )
                 )
             )
-    except Exception as err:
+    except Conflict as err:
         print(err)
         with indent(4, quote="* "):
             puts(colored.red("Error: Couldn't create view"))
@@ -71,7 +68,7 @@ def create_view(dataset_name, view_name, project, viewSQL):
     view_update = bigquery.Table(
         table_ref, schema=get_schema_from_description(view_description)
     )
-    view_update = bigquery_client.update_table(view_update, ["schema"])
+    bigquery_client.update_table(view_update, ["schema"])
     with indent(4, quote="* "):
         puts(colored.blue("Updated the view schema descriptions"))
 
@@ -102,7 +99,6 @@ def get_schema_from_description(view_description):
 
 
 def get_view_description(view_name):
-
     json_file = find(view_name + ".json", "./")
     with indent(4, quote="* "):
         puts(colored.green("Found the description file at --> " + json_file))
@@ -114,17 +110,15 @@ def get_view_description(view_name):
 
 def render_template(template_file, output_file):
     location = find(template_file, "metrics/").replace("metrics", "")
-    template_file = path.join(template_file.split(".")[0], template_file)
     # Template render
     template_loader = FileSystemLoader(searchpath="metrics/")
     template_env = Environment(loader=template_loader)
-    TEMPLATE_FILE = location
     with indent(4, quote="* "):
         puts(colored.green("Going to render template file at --> " + location))
     with indent(4, quote="* "):
         puts(colored.green("Rendered SQL --> "))
 
-    template = template_env.get_template(TEMPLATE_FILE)
+    template = template_env.get_template(location)
 
     output_text = template.render(config_dict)
 
@@ -150,10 +144,6 @@ def deploy_all(dataset_name):
 
 
 def main():
-
-    DATASET = ""
-    PROJECT = ""
-
     parser = argparse.ArgumentParser()
 
     parser.add_argument(
