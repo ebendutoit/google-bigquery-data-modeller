@@ -1,6 +1,6 @@
-jinja2
-argparse
-google-cloud-bigquery
-clint
-pyfiglet
-pygments
+Jinja2==2.10.3
+argparse==1.4.0
+google-cloud-bigquery==1.24.0
+clint==0.5.1
+pyfiglet==0.8.post1
+pygments==2.5.2
