@@ -1,18 +1,17 @@
 #!/usr/bin/env python3
 
-import os
-from os import path
-import sys
-import json
 import argparse
-
-from jinja2 import Template, FileSystemLoader, Environment
+import json
+import os
+import sys
+from clint.textui import puts, colored, indent
 from google.cloud import bigquery
+from jinja2 import Template, FileSystemLoader, Environment
+from os import path
 from pygments import highlight
 from pygments.lexers.sql import SqlLexer
 from pygments.formatters import TerminalFormatter
 from pyfiglet import Figlet
-from clint.textui import puts, colored, indent
 
 # Configuration load
 with open(path.join(".", "configuration", "configuration.json")) as json_config:
