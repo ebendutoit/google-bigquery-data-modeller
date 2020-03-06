@@ -14,8 +14,14 @@ from pygments.formatters import TerminalFormatter
 from pyfiglet import Figlet
 
 # Configuration load
-with open(path.join(".", "configuration", "configuration.json")) as json_config:
-    config_dict = json.load(json_config)
+try:
+    with open(path.join(".", "configuration", "configuration.json")) as json_config:
+        config_dict = json.load(json_config)
+except (OSError, IOError) as e:
+    with indent(4, quote='* '):
+            puts(colored.red("Please create configuration.json. It doesn't exist."))
+            sys.exit() 
+
 
 def create_view(dataset_name, view_name, project, viewSQL):
 
@@ -103,6 +109,7 @@ def render_template(template_file, output_file):
         puts(colored.green("Rendered SQL --> "))
 
     template = template_env.get_template(TEMPLATE_FILE)
+
     output_text = template.render(config_dict)
 
     if (output_file):
